@@ -1,0 +1,52 @@
+version: '3.3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8141:80
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=agora
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=agora
+      - MYSQL_PASSWORD=agora
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    links:
+      - db
+    ports:
+      - "8181:80"
+
+  app:
+    depends_on:
+      - db
+    image: bitnami/wordpress
+    volumes:
+      - ./themes:/var/www/html/wp-content/themes
+    ports:
+      - '8100:80'
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: agora
+      WORDPRESS_DB_PASSWORD: agora
+      WORDPRESS_DB_NAME: agora
+
+volumes:
+  db_data: {}
