@@ -40,6 +40,7 @@ services:
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
+      - ./wp/wp-content:/var/www/html/wp-content
     ports:
       - '80:80'
     restart: always
