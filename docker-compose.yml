@@ -50,6 +50,7 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./wp/wp-content:/var/www/html/wp-content
+      - ./wp/wp-config.php:/var/www/html/wp-config.php
     ports:
       - '80:80'
     restart: always
