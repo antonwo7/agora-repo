@@ -38,9 +38,9 @@ services:
       - db
     image: bitnami/wordpress
     volumes:
-      - ./themes:/var/www/html/wp-content/themes
+      - wp_data:/var/www/html
     ports:
-      - '8100:80'
+      - '80:80'
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
@@ -49,4 +49,5 @@ services:
       WORDPRESS_DB_NAME: agora
 
 volumes:
-  db_data: {}
+  db_data:
+  wp_data:
